@@ -2,6 +2,8 @@
 // Initialize the session
 session_start();
  
+
+require_once 'config.php';
 // Check if the user is logged in, if not then redirect him to login page
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: index.php");
@@ -9,29 +11,6 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 }
 ?>
 
-<!--<!DOCTYPE html>-->
-<!--<html lang="en">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <title>Welcome</title>-->
-<!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">-->
-<!--    <style type="text/css">-->
-<!--        body{ font: 14px sans-serif; text-align: center; }-->
-<!--    </style>-->
-<!--</head>-->
-<!--<body>-->
-<!--    <div class="page-header">-->
-<!--        <h1>Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>. Welcome to our site.</h1>-->
-<!--    </div>-->
-<!--    <p>-->
-<!--        <a href="resetpassword.php" class="btn btn-warning">Reset Your Password</a>-->
-<!--        <a href="logout.php" class="btn btn-danger">Sign Out of Your Account</a>-->
-<!--    </p>-->
-<!--</body>-->
-<!--</html>-->
-<?php
-require_once 'config.php';
-?>
 <!DOCTYPE html>
 <html>
 <title>KomplenBiskita</title>
@@ -99,13 +78,10 @@ require_once 'config.php';
 </style>
 
 <body>
+    <!--    top navigation bar and user information-->
     <div class="w3-top">
-        <!-- <div class="w3-bar w3-theme">
-    <p><img src="img/smallheading(W).png" width="20%"></p>
-    <p class="w3-bar-item w3-button w3-right"><i class="material-icons">person</i></p>
-  </div> -->
         <div class="w3-bar w3-theme">
-            <a href="welcome.php"><img src="img/smallheading(W).png" width="20%"></a>
+            <a href="welcome.php"><img src="img/smallheading(T).png" width="20%"></a>
             <!--<p>Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>. Welcome to our site.</p>-->
             <div class="w3-dropdown-hover w3-right">
                 <button class="w3-button"><i class="material-icons">person</i></button>
@@ -122,6 +98,7 @@ require_once 'config.php';
 
     <br><br>
 
+    <!--tab menu-->
     <div class="tab">
         <button class="tablinks" onclick="openCity(event, 'WaterWorks')" id="defaultOpen">Water Works & Drain</button>
         <button class="tablinks" onclick="openCity(event, 'AnimalPest')">Animal & Pest</button>
@@ -129,8 +106,10 @@ require_once 'config.php';
         <button class="tablinks" onclick="openCity(event, 'EnvironmentCleanliness')">Environment & Cleanliness</button>
         <button class="tablinks" onclick="openCity(event, 'TreesGreenery')">Trees & Greenery</button>
         <button class="tablinks" onclick="openCity(event, 'OtherComment')">Other & Comment</button>
+        <button class="tablinks" onclick="location.href='https://komplenbiskita.site/create.php'">Add new Komplen</button>
     </div>
-    <!-- New! -->
+    <!--    tab contents -->
+
     <div id="WaterWorks" class="tabcontent">
         <div>
             <div class="container-fluid">
@@ -140,11 +119,8 @@ require_once 'config.php';
                             <h2 class="pull-left">Water Works & Drain</h2>
                         </div>
                         <?php
-                    // Include config file
-                    // require_once "config.php";
-                    
                     // Attempt select query execution
-                    $sql = "SELECT * FROM komplen WHERE category='water_work'";
+                    $sql = "SELECT * FROM kb_complaint WHERE category_main='Water works & drains'";
                     if($result = $pdo->query($sql)){
                         if($result->rowCount() > 0){
                             echo "<table class='w3-table w3-striped'>";
@@ -152,24 +128,30 @@ require_once 'config.php';
                                     echo "<tr>";
                                        echo "<th>#</th>";
                                         echo "<th>Name</th>";
+                                        echo "<th>Title</th>";
                                         echo "<th>Date/Time</th>";
                                         echo "<th>location</th>";
                                         echo "<th>Action</th>";
+                                        echo "<th>Status</th>";
                                     echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody>";
                                 while($row = $result->fetch()){
                                     echo "<tr>";
-                                        echo "<td>" . $row['id'] . "</td>";
-                                        echo "<td>" . $row['name'] . "</td>";
-                                        echo "<td>" . $row['date'] . "</td>";
-                                        echo "<td>" . $row['location'] . "</td>";
+                                        echo "<td>" . $row['no'] . "</td>";
+                                        echo "<td>" . $row['by_comp'] . "</td>";
+                                        echo "<td>" . $row['title_sub'] . "</td>";
+                                        echo "<td>" . $row['date_comp'] . "</td>";
+                                        echo "<td>" . $row['location_comp'] . "</td>";
                                         echo "<td>";
 //                                            view full details 
-                                            echo "<a href='read.php?id=". $row['id'] ."' title='View Record' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
+                                            echo "<a href='read.php?no=". $row['no'] ."' title='View Record' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
+//                                            edit komplen
+                                            echo "<a href='update.php?no=". $row['no'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
 //                                           delete row
-                                            echo "<a href='delete.php?id=". $row['id'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
+                                            echo "<a href='delete.php?no=". $row['no'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
                                         echo "</td>";
+                                        echo "<td>" . $row['status'] . "</td>";
                                     echo "</tr>";
                                 }
                                 echo "</tbody>";                            
@@ -182,32 +164,25 @@ require_once 'config.php';
                     } else{
                         echo "ERROR: Could not able to execute $sql. " . $mysqli->error;
                     }
-                    
-                    // Close connection
-                   // unset($pdo);
                     ?>
                     </div>
                 </div>
             </div>
         </div>
-
+        <!--        end of water_work-->
     </div>
 
     <div id="AnimalPest" class="tabcontent">
-
         <div>
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="page-header clearfix">
-                            <h2 class="pull-left">Water Works & Drain</h2>
+                            <h2 class="pull-left">Animal & Pest</h2>
                         </div>
                         <?php
-                    // Include config file
-                    // require_once "config.php";
-                    
                     // Attempt select query execution
-                    $sql = "SELECT * FROM komplen WHERE category='animal_pest'";
+                    $sql = "SELECT * FROM kb_complaint WHERE category_main='Animal & pest'";
                     if($result = $pdo->query($sql)){
                         if($result->rowCount() > 0){
                             echo "<table class='w3-table w3-striped'>";
@@ -215,24 +190,30 @@ require_once 'config.php';
                                     echo "<tr>";
                                        echo "<th>#</th>";
                                         echo "<th>Name</th>";
+                                        echo "<th>Title</th>";
                                         echo "<th>Date/Time</th>";
                                         echo "<th>location</th>";
                                         echo "<th>Action</th>";
+                                        echo "<th>Status</th>";
                                     echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody>";
                                 while($row = $result->fetch()){
                                     echo "<tr>";
-                                        echo "<td>" . $row['id'] . "</td>";
-                                        echo "<td>" . $row['name'] . "</td>";
-                                        echo "<td>" . $row['date'] . "</td>";
-                                        echo "<td>" . $row['location'] . "</td>";
+                                        echo "<td>" . $row['no'] . "</td>";
+                                        echo "<td>" . $row['by_comp'] . "</td>";
+                                        echo "<td>" . $row['title_sub'] . "</td>";
+                                        echo "<td>" . $row['date_comp'] . "</td>";
+                                        echo "<td>" . $row['location_comp'] . "</td>";
                                         echo "<td>";
 //                                            view full details 
-                                            echo "<a href='read.php?id=". $row['id'] ."' title='View Record' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
+                                            echo "<a href='read.php?no=". $row['no'] ."' title='View Record' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
+//                                            edit komplen
+                                            echo "<a href='update.php?no=". $row['no'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
 //                                           delete row
-                                            echo "<a href='delete.php?id=". $row['id'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
+                                            echo "<a href='delete.php?nono=". $row['no'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
                                         echo "</td>";
+                                        echo "<td>" . $row['status'] . "</td>";
                                     echo "</tr>";
                                 }
                                 echo "</tbody>";                            
@@ -245,9 +226,6 @@ require_once 'config.php';
                     } else{
                         echo "ERROR: Could not able to execute $sql. " . $mysqli->error;
                     }
-                    
-                    // Close connection
-                   // unset($pdo);
                     ?>
                     </div>
                 </div>
@@ -258,7 +236,7 @@ require_once 'config.php';
 
     <div id="RoadFootpath" class="tabcontent">
 
-        <div>
+       <div>
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-12">
@@ -266,11 +244,8 @@ require_once 'config.php';
                             <h2 class="pull-left">Road & Footpath</h2>
                         </div>
                         <?php
-                    // Include config file
-                    // require_once "config.php";
-                    
                     // Attempt select query execution
-                    $sql = "SELECT * FROM komplen WHERE category='road_footpath'";
+                    $sql = "SELECT * FROM kb_complaint WHERE category_main='Road & Footpath'";
                     if($result = $pdo->query($sql)){
                         if($result->rowCount() > 0){
                             echo "<table class='w3-table w3-striped'>";
@@ -278,24 +253,30 @@ require_once 'config.php';
                                     echo "<tr>";
                                        echo "<th>#</th>";
                                         echo "<th>Name</th>";
+                                        echo "<th>Title</th>";
                                         echo "<th>Date/Time</th>";
                                         echo "<th>location</th>";
                                         echo "<th>Action</th>";
+                                        echo "<th>Status</th>";
                                     echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody>";
                                 while($row = $result->fetch()){
                                     echo "<tr>";
-                                        echo "<td>" . $row['id'] . "</td>";
-                                        echo "<td>" . $row['name'] . "</td>";
-                                        echo "<td>" . $row['date'] . "</td>";
-                                        echo "<td>" . $row['location'] . "</td>";
+                                        echo "<td>" . $row['no'] . "</td>";
+                                        echo "<td>" . $row['by_comp'] . "</td>";
+                                        echo "<td>" . $row['title_sub'] . "</td>";
+                                        echo "<td>" . $row['date_comp'] . "</td>";
+                                        echo "<td>" . $row['location_comp'] . "</td>";
                                         echo "<td>";
 //                                            view full details 
-                                            echo "<a href='read.php?id=". $row['id'] ."' title='View Record' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
+                                            echo "<a href='read.php?no=". $row['no'] ."' title='View Record' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
+//                                            edit komplen
+                                            echo "<a href='update.php?no=". $row['no'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
 //                                           delete row
-                                            echo "<a href='delete.php?id=". $row['id'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
+                                            echo "<a href='delete.php?no=". $row['no'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
                                         echo "</td>";
+                                        echo "<td>" . $row['status'] . "</td>";
                                     echo "</tr>";
                                 }
                                 echo "</tbody>";                            
@@ -308,9 +289,6 @@ require_once 'config.php';
                     } else{
                         echo "ERROR: Could not able to execute $sql. " . $mysqli->error;
                     }
-                    
-                    // Close connection
-                   // unset($pdo);
                     ?>
                     </div>
                 </div>
@@ -328,11 +306,8 @@ require_once 'config.php';
                             <h2 class="pull-left">Environment & Cleanliness</h2>
                         </div>
                         <?php
-                    // Include config file
-                    // require_once "config.php";
-                    
                     // Attempt select query execution
-                    $sql = "SELECT * FROM komplen WHERE category='environment_cleanliness'";
+                    $sql = "SELECT * FROM kb_complaint WHERE category_main='Environment & cleanliness'";
                     if($result = $pdo->query($sql)){
                         if($result->rowCount() > 0){
                             echo "<table class='w3-table w3-striped'>";
@@ -340,24 +315,30 @@ require_once 'config.php';
                                     echo "<tr>";
                                        echo "<th>#</th>";
                                         echo "<th>Name</th>";
+                                        echo "<th>Title</th>";
                                         echo "<th>Date/Time</th>";
                                         echo "<th>location</th>";
                                         echo "<th>Action</th>";
+                                        echo "<th>Status</th>";
                                     echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody>";
                                 while($row = $result->fetch()){
                                     echo "<tr>";
-                                        echo "<td>" . $row['id'] . "</td>";
-                                        echo "<td>" . $row['name'] . "</td>";
-                                        echo "<td>" . $row['date'] . "</td>";
-                                        echo "<td>" . $row['location'] . "</td>";
+                                        echo "<td>" . $row['no'] . "</td>";
+                                        echo "<td>" . $row['by_comp'] . "</td>";
+                                        echo "<td>" . $row['title_sub'] . "</td>";
+                                        echo "<td>" . $row['date_comp'] . "</td>";
+                                        echo "<td>" . $row['location_comp'] . "</td>";
                                         echo "<td>";
 //                                            view full details 
-                                            echo "<a href='read.php?id=". $row['id'] ."' title='View Record' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
+                                            echo "<a href='read.php?no=". $row['no'] ."' title='View Record' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
+//                                            edit komplen
+                                            echo "<a href='update.php?no=". $row['no'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
 //                                           delete row
-                                            echo "<a href='delete.php?id=". $row['id'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
+                                            echo "<a href='delete.php?no=". $row['no'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
                                         echo "</td>";
+                                        echo "<td>" . $row['status'] . "</td>";
                                     echo "</tr>";
                                 }
                                 echo "</tbody>";                            
@@ -370,9 +351,6 @@ require_once 'config.php';
                     } else{
                         echo "ERROR: Could not able to execute $sql. " . $mysqli->error;
                     }
-                    
-                    // Close connection
-                   // unset($pdo);
                     ?>
                     </div>
                 </div>
@@ -382,19 +360,16 @@ require_once 'config.php';
     </div>
 
     <div id="TreesGreenery" class="tabcontent">
-        <div>
+       <div>
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="page-header clearfix">
-                            <h2 class="pull-left">Trees & Greenery</h2>
+                            <h2 class="pull-left">Tree & Greenery</h2>
                         </div>
                         <?php
-                    // Include config file
-                    // require_once "config.php";
-                    
                     // Attempt select query execution
-                    $sql = "SELECT * FROM komplen WHERE category='trees_greenery'";
+                    $sql = "SELECT * FROM kb_complaint WHERE category_main='Tree & greenery'";
                     if($result = $pdo->query($sql)){
                         if($result->rowCount() > 0){
                             echo "<table class='w3-table w3-striped'>";
@@ -402,24 +377,30 @@ require_once 'config.php';
                                     echo "<tr>";
                                        echo "<th>#</th>";
                                         echo "<th>Name</th>";
+                                        echo "<th>Title</th>";
                                         echo "<th>Date/Time</th>";
                                         echo "<th>location</th>";
                                         echo "<th>Action</th>";
+                                        echo "<th>Status</th>";
                                     echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody>";
                                 while($row = $result->fetch()){
                                     echo "<tr>";
-                                        echo "<td>" . $row['id'] . "</td>";
-                                        echo "<td>" . $row['name'] . "</td>";
-                                        echo "<td>" . $row['date'] . "</td>";
-                                        echo "<td>" . $row['location'] . "</td>";
+                                        echo "<td>" . $row['no'] . "</td>";
+                                        echo "<td>" . $row['by_comp'] . "</td>";
+                                        echo "<td>" . $row['title_sub'] . "</td>";
+                                        echo "<td>" . $row['date_comp'] . "</td>";
+                                        echo "<td>" . $row['location_comp'] . "</td>";
                                         echo "<td>";
 //                                            view full details 
-                                            echo "<a href='read.php?id=". $row['id'] ."' title='View Record' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
+                                            echo "<a href='read.php?no=". $row['no'] ."' title='View Record' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
+//                                            edit komplen
+                                            echo "<a href='update.php?no=". $row['no'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
 //                                           delete row
-                                            echo "<a href='delete.php?id=". $row['id'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
+                                            echo "<a href='delete.php?no=". $row['no'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
                                         echo "</td>";
+                                        echo "<td>" . $row['status'] . "</td>";
                                     echo "</tr>";
                                 }
                                 echo "</tbody>";                            
@@ -432,9 +413,6 @@ require_once 'config.php';
                     } else{
                         echo "ERROR: Could not able to execute $sql. " . $mysqli->error;
                     }
-                    
-                    // Close connection
-                   // unset($pdo);
                     ?>
                     </div>
                 </div>
@@ -445,7 +423,7 @@ require_once 'config.php';
 
     <div id="OtherComment" class="tabcontent">
 
-        <div>
+       <div>
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-12">
@@ -453,11 +431,8 @@ require_once 'config.php';
                             <h2 class="pull-left">Other & Comment</h2>
                         </div>
                         <?php
-                    // Include config file
-                    // require_once "config.php";
-                    
                     // Attempt select query execution
-                    $sql = "SELECT * FROM komplen WHERE category='other_comment'";
+                    $sql = "SELECT * FROM kb_complaint WHERE category_main='Other & comment'";
                     if($result = $pdo->query($sql)){
                         if($result->rowCount() > 0){
                             echo "<table class='w3-table w3-striped'>";
@@ -465,24 +440,30 @@ require_once 'config.php';
                                     echo "<tr>";
                                        echo "<th>#</th>";
                                         echo "<th>Name</th>";
+                                        echo "<th>Title</th>";
                                         echo "<th>Date/Time</th>";
                                         echo "<th>location</th>";
                                         echo "<th>Action</th>";
+                                        echo "<th>Status</th>";
                                     echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody>";
                                 while($row = $result->fetch()){
                                     echo "<tr>";
-                                        echo "<td>" . $row['id'] . "</td>";
-                                        echo "<td>" . $row['name'] . "</td>";
-                                        echo "<td>" . $row['date'] . "</td>";
-                                        echo "<td>" . $row['location'] . "</td>";
+                                        echo "<td>" . $row['no'] . "</td>";
+                                        echo "<td>" . $row['by_comp'] . "</td>";
+                                        echo "<td>" . $row['title_sub'] . "</td>";
+                                        echo "<td>" . $row['date_comp'] . "</td>";
+                                        echo "<td>" . $row['location_comp'] . "</td>";
                                         echo "<td>";
 //                                            view full details 
-                                            echo "<a href='read.php?id=". $row['id'] ."' title='View Record' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
+                                            echo "<a href='read.php?no=". $row['no'] ."' title='View Record' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
+//                                            edit komplen
+                                            echo "<a href='update.php?no=". $row['no'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
 //                                           delete row
-                                            echo "<a href='delete.php?id=". $row['id'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
+                                            echo "<a href='delete.php?no=". $row['no'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
                                         echo "</td>";
+                                        echo "<td>" . $row['status'] . "</td>";
                                     echo "</tr>";
                                 }
                                 echo "</tbody>";                            
@@ -495,9 +476,6 @@ require_once 'config.php';
                     } else{
                         echo "ERROR: Could not able to execute $sql. " . $mysqli->error;
                     }
-                    
-                    // Close connection
-                   // unset($pdo);
                     ?>
                     </div>
                 </div>

@@ -17,7 +17,7 @@ $username_err = $password_err = "";
  
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
- 
+    
     // Check if username is empty
     if(empty(trim($_POST["username"]))){
         $username_err = "Please enter username.";
@@ -35,7 +35,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // Validate credentials
     if(empty($username_err) && empty($password_err)){
         // Prepare a select statement
-        $sql = "SELECT id, username, password FROM users WHERE username = :username";
+        $sql = "SELECT id, username, password FROM kb_admin WHERE username = :username";
         
         if($stmt = $pdo->prepare($sql)){
             // Bind variables to the prepared statement as parameters
@@ -114,6 +114,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
 <body>
     <div class="w3-card-4 w3-display-middle">
+        <div class="w3-panel w3-red w3-display-container">
+            <span onclick="this.parentElement.style.display='none'" class="w3-button w3-red w3-large w3-display-topright">&times;</span>
+            <h3>Warning</h3>
+            <p>ONLY FOR AUTHORISED PERSONNEL</p>
+        </div>
         <div class="wrapper">
             <div class="w3-container w3-theme">
                 <h2>Administration login</h2>
@@ -135,6 +140,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 </div>
             </form>
         </div>
+
     </div>
 </body>
 

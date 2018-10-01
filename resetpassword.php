@@ -40,7 +40,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // Check input errors before updating the database
     if(empty($new_password_err) && empty($confirm_password_err)){
         // Prepare an update statement
-        $sql = "UPDATE users SET password = :password WHERE id = :id";
+        $sql = "UPDATE kb_admin SET password = :password WHERE id = :id";
         
         if($stmt = $pdo->prepare($sql)){
             // Bind variables to the prepared statement as parameters
@@ -89,30 +89,37 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             padding: 20px;
         }
 
+        .w3-theme {
+            color: #fff !important;
+            background-color: #009e74 !important
+        }
+
     </style>
 </head>
 
 <body>
     <div class="w3-card-4 w3-display-middle">
         <div class="wrapper">
-            <h2>Reset Password</h2>
+            <div class="w3-container w3-theme">
+                <h2>Reset Password</h2>
+            </div>
             <p>Please fill out this form to reset your password.</p>
             <form action="<?php echo htmlspecialchars($_SERVER[" PHP_SELF"]); ?>" method="post">
                 <div class="form-group <?php echo (!empty($new_password_err)) ? 'has-error' : ''; ?>">
-
-                    <input type="password" name="new_password" class="form-control" placeholder="New Password" value="<?php echo $new_password; ?>">
+                    <label>New Password</label>
+                    <input type="password" name="new_password" class="form-control" value="<?php echo $new_password; ?>">
                     <span class="help-block">
                         <?php echo $new_password_err; ?></span>
                 </div>
                 <div class="form-group <?php echo (!empty($confirm_password_err)) ? 'has-error' : ''; ?>">
-
-                    <input type="password" name="confirm_password" class="form-control" placeholder="Confirm Password">
+                    <label>Confirm Password</label>
+                    <input type="password" name="confirm_password" class="form-control">
                     <span class="help-block">
                         <?php echo $confirm_password_err; ?></span>
                 </div>
                 <div class="form-group">
-                    <input type="submit" class="btn btn-primary" value="Submit">
-                    <a class="w3-button w3-theme" href="welcome.php">Cancel</a>
+                    <input type="submit" class="w3-button w3-theme" value="Submit">
+                    <a class="btn btn-link" href="welcome.php">Cancel</a>
                 </div>
             </form>
         </div>
