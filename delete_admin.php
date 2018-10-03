@@ -5,19 +5,19 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
     require_once "config.php";
     
     // Prepare a delete statement
-    $sql = "DELETE FROM kb_complaint WHERE no = :no";
+    $sql = "DELETE FROM kb_complaint WHERE id = :id";
     
     if($stmt = $pdo->prepare($sql)){
         // Bind variables to the prepared statement as parameters
-        $stmt->bindParam(":no", $param_id);
+        $stmt->bindParam(":id", $param_id);
         
         // Set parameters
-        $param_id = trim($_POST["no"]);
+        $param_id = trim($_POST["id"]);
         
         // Attempt to execute the prepared statement
         if($stmt->execute()){
             // Records deleted successfully. Redirect to landing page
-            header("location: welcome.php");
+            header("location: superadmin.php");
             exit();
         } else{
             echo "Oops! Something went wrong. Please try again later.";
@@ -31,7 +31,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
     unset($pdo);
 } else{
     // Check existence of id parameter
-    if(empty(trim($_GET["no"]))){
+    if(empty(trim($_GET["id"]))){
         // URL doesn't contain id parameter. Redirect to error page
         header("location: error.php");
         exit();
@@ -61,11 +61,11 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                     </div>
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                         <div class="alert alert-danger fade in">
-                            <input type="hidden" name="no" value="<?php echo trim($_GET["no"]); ?>"/>
+                            <input type="hidden" name="id" value="<?php echo trim($_GET["no"]); ?>"/>
                             <p>Are you sure you want to delete this record?</p><br>
                             <p>
                                 <input type="submit" value="Yes" class="btn btn-danger">
-                                <a href="welcome.php" class="btn btn-default">No</a>
+                                <a href="superadmin.php" class="btn btn-default">No</a>
                             </p>
                         </div>
                     </form>

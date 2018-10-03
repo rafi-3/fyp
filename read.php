@@ -23,7 +23,7 @@ if(isset($_GET["no"]) && !empty(trim($_GET["no"]))){
                 // Retrieve individual field value
                 $by_comp = $row["by_comp"];
                 $title_sub = $row["title_sub"];
-                $description_sub = $row["description_sub"];
+                $description_sub = $row["description_comp"];
                 $date_comp = $row["date_comp"];
                 $location_comp = $row["location_comp"];
                 $image_comp = $row["image_comp"];
@@ -101,7 +101,7 @@ if(isset($_GET["no"]) && !empty(trim($_GET["no"]))){
                         <div class="form-group">
                             <label>Description</label>
                             <p class="form-control-static">
-                                <?php echo $row["description_sub"]; ?>
+                                <?php echo $row["description_comp"]; ?>
                             </p>
                         </div>
                         <div class="form-group">

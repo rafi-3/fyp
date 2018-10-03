@@ -87,8 +87,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             
             // Attempt to execute the prepared statement
             if($stmt->execute()){
-                // Redirect to login page
-                header("location: index.php");
+                // Redirect to admin page
+                header("location: superadmin.php");
             } else{
                 echo "Something went wrong. Please try again later.";
             }
@@ -164,7 +164,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     <input type="submit" class="w3-button w3-theme" value="Submit">
                     <input type="reset" class="w3-button w3-theme" value="Reset">
                 </div>
-                <p>Already have an account? <a href="index.php">Login here</a>.</p>
+                <p><a href="superadmin.php">Cancel</a></p>
             </form>
         </div>
     </div>

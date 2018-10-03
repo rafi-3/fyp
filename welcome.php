@@ -79,9 +79,9 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
 <body>
     <!--    top navigation bar and user information-->
-    <div class="w3-top">
-        <div class="w3-bar w3-theme">
-            <a href="welcome.php"><img src="img/smallheading(T).png" width="20%"></a>
+    <div class="w3-top w3-mobile">
+        <div class="w3-bar w3-theme w3-mobile">
+            <a href="welcome.php" title="Refresh"><img src="img/smallheading(T).png" width="20%" class="w3-mobile"></a>
             <!--<p>Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>. Welcome to our site.</p>-->
             <div class="w3-dropdown-hover w3-right">
                 <button class="w3-button"><i class="material-icons">person</i></button>
@@ -89,6 +89,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     <p>Hi, <b>
                             <?php echo htmlspecialchars($_SESSION["username"]); ?></b>!</p>
                     <a href="resetpassword.php" class="w3-bar-item w3-button">Reset password</a>
+                    <a href="superadmin.php" class="w3-bar-item w3-button">Super Admin</a>
                     <a href="logout.php" class="w3-bar-item w3-button w3-theme">Logout</a>
                     <p>version 0.3(full-db)</p>
                 </div>
@@ -100,13 +101,12 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
     <!--tab menu-->
     <div class="tab">
-        <button class="tablinks" onclick="openCity(event, 'WaterWorks')" id="defaultOpen">Water Works & Drain</button>
-        <button class="tablinks" onclick="openCity(event, 'AnimalPest')">Animal & Pest</button>
-        <button class="tablinks" onclick="openCity(event, 'RoadFootpath')">Road & Footpath</button>
-        <button class="tablinks" onclick="openCity(event, 'EnvironmentCleanliness')">Environment & Cleanliness</button>
-        <button class="tablinks" onclick="openCity(event, 'TreesGreenery')">Trees & Greenery</button>
-        <button class="tablinks" onclick="openCity(event, 'OtherComment')">Other & Comment</button>
-        <button class="tablinks" onclick="location.href='https://komplenbiskita.site/create.php'">Add new Komplen</button>
+        <button class="tablinks w3-mobile" onclick="openCity(event, 'WaterWorks')" id="defaultOpen">Water Works & Drain</button>
+        <button class="tablinks w3-mobile" onclick="openCity(event, 'AnimalPest')">Animal & Pest</button>
+        <button class="tablinks w3-mobile" onclick="openCity(event, 'RoadFootpath')">Road & Footpath</button>
+        <button class="tablinks w3-mobile" onclick="openCity(event, 'EnvironmentCleanliness')">Environment & Cleanliness</button>
+        <button class="tablinks w3-mobile" onclick="openCity(event, 'TreesGreenery')">Trees & Greenery</button>
+        <button class="tablinks w3-mobile" onclick="openCity(event, 'OtherComment')">Other & Comment</button>
     </div>
     <!--    tab contents -->
 
@@ -123,7 +123,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     $sql = "SELECT * FROM kb_complaint WHERE category_main='Water works & drains'";
                     if($result = $pdo->query($sql)){
                         if($result->rowCount() > 0){
-                            echo "<table class='w3-table w3-striped'>";
+                            echo "<table class='w3-table w3-striped w3-mobile'>";
                                 echo "<thead>";
                                     echo "<tr>";
                                        echo "<th>#</th>";
@@ -185,7 +185,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     $sql = "SELECT * FROM kb_complaint WHERE category_main='Animal & pest'";
                     if($result = $pdo->query($sql)){
                         if($result->rowCount() > 0){
-                            echo "<table class='w3-table w3-striped'>";
+                            echo "<table class='w3-table w3-striped w3-mobile'>";
                                 echo "<thead>";
                                     echo "<tr>";
                                        echo "<th>#</th>";
@@ -236,7 +236,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
     <div id="RoadFootpath" class="tabcontent">
 
-       <div>
+        <div>
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-12">
@@ -248,7 +248,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     $sql = "SELECT * FROM kb_complaint WHERE category_main='Road & Footpath'";
                     if($result = $pdo->query($sql)){
                         if($result->rowCount() > 0){
-                            echo "<table class='w3-table w3-striped'>";
+                            echo "<table class='w3-table w3-striped w3-mobile'>";
                                 echo "<thead>";
                                     echo "<tr>";
                                        echo "<th>#</th>";
@@ -310,7 +310,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     $sql = "SELECT * FROM kb_complaint WHERE category_main='Environment & cleanliness'";
                     if($result = $pdo->query($sql)){
                         if($result->rowCount() > 0){
-                            echo "<table class='w3-table w3-striped'>";
+                            echo "<table class='w3-table w3-striped w3-mobile'>";
                                 echo "<thead>";
                                     echo "<tr>";
                                        echo "<th>#</th>";
@@ -360,7 +360,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     </div>
 
     <div id="TreesGreenery" class="tabcontent">
-       <div>
+        <div>
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-12">
@@ -372,7 +372,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     $sql = "SELECT * FROM kb_complaint WHERE category_main='Tree & greenery'";
                     if($result = $pdo->query($sql)){
                         if($result->rowCount() > 0){
-                            echo "<table class='w3-table w3-striped'>";
+                            echo "<table class='w3-table w3-striped w3-mobile'>";
                                 echo "<thead>";
                                     echo "<tr>";
                                        echo "<th>#</th>";
@@ -423,7 +423,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
     <div id="OtherComment" class="tabcontent">
 
-       <div>
+        <div>
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-12">
@@ -435,7 +435,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     $sql = "SELECT * FROM kb_complaint WHERE category_main='Other & comment'";
                     if($result = $pdo->query($sql)){
                         if($result->rowCount() > 0){
-                            echo "<table class='w3-table w3-striped'>";
+                            echo "<table class='w3-table w3-striped w3-mobile'>";
                                 echo "<thead>";
                                     echo "<tr>";
                                        echo "<th>#</th>";

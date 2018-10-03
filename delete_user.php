@@ -1,11 +1,11 @@
 <?php
 // Process delete operation after confirmation
-if(isset($_POST["id"]) && !empty($_POST["id"])){
+if(isset($_POST["no"]) && !empty($_POST["no"])){
     // Include config file
     require_once "config.php";
     
     // Prepare a delete statement
-    $sql = "DELETE FROM kb_complaint WHERE no = :no";
+    $sql = "DELETE FROM kb_user WHERE no = :no";
     
     if($stmt = $pdo->prepare($sql)){
         // Bind variables to the prepared statement as parameters
@@ -17,7 +17,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
         // Attempt to execute the prepared statement
         if($stmt->execute()){
             // Records deleted successfully. Redirect to landing page
-            header("location: welcome.php");
+            header("location: superadmin.php");
             exit();
         } else{
             echo "Oops! Something went wrong. Please try again later.";
@@ -65,7 +65,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                             <p>Are you sure you want to delete this record?</p><br>
                             <p>
                                 <input type="submit" value="Yes" class="btn btn-danger">
-                                <a href="welcome.php" class="btn btn-default">No</a>
+                                <a href="superadmin.php" class="btn btn-default">No</a>
                             </p>
                         </div>
                     </form>

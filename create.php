@@ -68,27 +68,27 @@ if (empty($_POST["status"])) {
 
 
     // Check input errors before inserting in database
-    if(empty($name_err) && empty($detail_err) && empty($location_err) && empty($status_err )){
+    if(empty($name_err) && empty($title_err) && empty($detail_err) && empty($location_err) && empty($date_err) && empty($param_img) && empty($param_status) && empty(category)){
         // Prepare an insert statement
-        $sql = "INSERT INTO komplen (name, detail, date, location, category, status) VALUES (:name, :detail, :date, :location, :category, :status)";
- 
+        $sql = "INSERT INTO kb_complaint (title_sub, image_comp, description_comp, location_comp, date_comp, by_comp, category_main,  status) VALUES (:title_sub, :image_comp, :description_comp, :location_comp, :date_comp, :by_comp, :category_main, :status)";
+        
         if($stmt = $pdo->prepare($sql)){
             // Bind variables to the prepared statement as parameters
-            $stmt->bindParam(":name", $param_name);
-            $stmt->bindParam(":detail", $param_detail);
-            $stmt->bindParam(":location", $param_location);
-            $stmt->bindParam(":date", $param_date);
-            //$stmt->bindParam(":img", $param_img);
-            $stmt->bindParam(":category", $param_category);
+            $stmt->bindParam(":by_comp", $param_name);
+            $stmt->bindParam(":title_sub", $param_title);
+            $stmt->bindParam(":description_comp", $param_detail);
+            $stmt->bindParam(":location_comp", $param_location);
+            $stmt->bindParam(":date_comp", $param_date);
+            $stmt->bindParam(":image_comp", $param_img);
             $stmt->bindParam(":status", $param_status);
             
             // Set parameters
             $param_name = $name;
+            $param_title = $title;
             $param_detail = $detail;
             $param_location = $location;
             $param_date = $date;
-            //$param_img = $img;
-            $param_category = $category;
+            $param_img = $img;
             $param_status = $status;
             
             // Attempt to execute the prepared statement

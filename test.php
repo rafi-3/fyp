@@ -7,9 +7,9 @@ $name = $title = $detail = $location = $date = $status = "";
 $name_err = $title_err = $detail_err = $location_err = $date_err = $status_err =  "";
  
 // Processing form data when form is submitted
-if(isset($_POST["id"]) && !empty($_POST["id"])){
+if(isset($_POST["no"]) && !empty($_POST["no"])){
     // Get hidden input value
-    $id = $_POST["id"];
+    $id = $_POST["no"];
     
     // Validate name
     $input_name = trim($_POST["by_comp"]);
@@ -53,14 +53,12 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
     $status = $input_status;
     }
     
-
-       
-         
-        //  update
-        $sql ="UPDATE kb_complaint SET title_sub=:title_sub ,image_comp=:image_comp , description_comp=:description_comp ,location_comp=:location_comp , date_comp=:date_comp , by_comp=:by_comp, status=:status  WHERE no=:no";
- 
- 
-        if($stmt = $pdo->prepare($sql)){
+    // Check input errors before inserting in database
+    if(empty($name_err) && empty($title_err) && empty($detail_err) && empty($location_err) && empty($date_err) && empty($status_err)){
+        // Prepare an update statement
+         $sql ="UPDATE kb_complaint SET title_sub=:title_sub ,image_comp=:image_comp , description_comp=:description_comp ,location_comp=:location_comp , date_comp=:date_comp , by_comp=:by_comp, status=:status  WHERE no=:no";
+        
+       if($stmt = $pdo->prepare($sql)){
             // Bind variables to the prepared statement as parameters
             $stmt->bindParam(":by_comp", $param_name);
             $stmt->bindParam(":title_sub", $param_title);
@@ -81,7 +79,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
             
             // Attempt to execute the prepared statement
             if($stmt->execute()){
-                // Records created successfully. Redirect to landing page
+                // Records updated successfully. Redirect to landing page
                 header("location: welcome.php");
                 exit();
             } else{
@@ -89,7 +87,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
             }
         }
          
-        // Close statement
+       // Close statement
         unset($stmt);
     }
     
@@ -97,7 +95,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
     unset($pdo);
 } else{
     // Check existence of id parameter before processing further
-    if(isset($_GET["no"]) && !empty(trim($_GET["no"]))){
+   if(isset($_GET["no"]) && !empty(trim($_GET["no"]))){
         // Get URL parameter
         $id =  trim($_GET["no"]);
         
@@ -119,12 +117,12 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                     // Retrieve individual field value
                     $by_comp = $row["by_comp"];
                     $title_sub = $row["title_sub"];
-                    $description_sub = $row["description_sub"];
+                    $description_sub = $row["description_comp"];
                     $date_comp = $row["date_comp"];
                     $location_comp = $row["location_comp"];
                     $image_comp = $row["image_comp"];
                     $status = $row["status"];
-
+                    
                 } else{
                     // URL doesn't contain valid id. Redirect to error page
                     header("location: error.php");
@@ -176,7 +174,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                     <p>Please update status/image and submit to update Komplen.</p>
                     <form action="<?php echo htmlspecialchars(basename($_SERVER['REQUEST_URI'])); ?>" method="post">
 
-                        <div class="form-group">
+                         <div class="form-group">
                             <label>Name</label>
                             <input type="text" name="name" class="form-control-static" value="<?php echo $row["by_comp"] ?>">
                         </div>
@@ -186,7 +184,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                         </div>
                         <div class="form-group">
                             <label>Detail</label>
-                            <input type="text" name="name" class="form-control-static" value="<?php echo $row["description_sub"] ?>">
+                            <input type="text" name="name" class="form-control-static" value="<?php echo $row["description_comp"] ?>">
                         </div>
                         <div class="form-group">
                             <label>Date</label>
