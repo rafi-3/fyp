@@ -3,112 +3,83 @@
 require_once "config.php";
  
 // Define variables and initialize with empty values
-$name = $title = $detail = $location = $date = $status = "";
-$name_err = $title_err = $detail_err = $location_err = $date_err = $status_err =  "";
- 
+$title_sub = $image_comp = $description_comp = $location_comp = $date_comp = $by_comp = $status_new = "";
+$title_sub_err = $image_comp_err = $description_comp_err = $location_comp_err = $date_comp_err = $by_comp_err = $status_new_err = "";
+
 // Processing form data when form is submitted
-if(isset($_POST["id"]) && !empty($_POST["id"])){
+if(isset($_POST["no"]) && !empty($_POST["no"])){
+
     // Get hidden input value
-    $id = $_POST["id"];
-    
-    // Validate name
-    $input_name = trim($_POST["by_comp"]);
-    if(empty($input_name)){
-        $name_err = "Please enter a name.";
-    } elseif(!filter_var($input_name, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[a-zA-Z\s]+$/")))){
-        $name_err = "Please enter a valid name.";
-    } else{
-        $name = $input_name;
-    }
-    
-    //    validate title
-    $input_title = trim($_POST["title_sub"]);
-    if(empty($input_title)){
-        $detail_err = "Please write full title.";     
-    } else{
-        $title = $input_title;
-    }
-    
-    //     Validate detail/description
-    $input_detail = trim($_POST["description_sub"]);
-    if(empty($input_detail)){
-        $detail_err = "Please write full description.";     
-    } else{
-        $detail = $input_detail;
-    }
-    
-    //    validate location
-    $input_location = trim($_POST["location_comp"]);
-    if(empty($input_location)){
-        $location_err = "Please write full location.";
-    } else{
-        $location = $input_location;
-    }
+    $no = $_POST["no"];
 
-    //    status
-    $input_status = trim($_POST["status"]);
-    if (empty($input_status)) {
-    $status_err = "Choose a status";
-    } else {
-    $status = $input_status;
-    }
+    //    Validate status
+   $input_status = trim($_POST["status_new"]);
+   if (empty($input_status)) {
+   $status_new_err = "Choose a status";
+   } else {
+   $status_new = $input_status;
+   }
     
-
-       
-         
-        //  update
-        $sql ="UPDATE kb_complaint SET title_sub=:title_sub ,image_comp=:image_comp , description_comp=:description_comp ,location_comp=:location_comp , date_comp=:date_comp , by_comp=:by_comp, status=:status  WHERE no=:no";
- 
- 
-        if($stmt = $pdo->prepare($sql)){
-            // Bind variables to the prepared statement as parameters
-            $stmt->bindParam(":by_comp", $param_name);
-            $stmt->bindParam(":title_sub", $param_title);
-            $stmt->bindParam(":description_comp", $param_detail);
-            $stmt->bindParam(":location_comp", $param_location);
-            $stmt->bindParam(":date_comp", $param_date);
-            $stmt->bindParam(":image_comp", $param_img);
-            $stmt->bindParam(":status", $param_status);
+    // Check input errors before inserting in database
+    if(empty($status_new_err)){
+        // Prepare an update statement
+        //  $sql = "UPDATE kb_complaint SET title_sub=:title_sub, image_comp=:image_comp, description_comp=:description_comp, location_comp=:location_comp, date_comp=:date_comp, by_comp=:by_comp, status=:status WHERE no=:no";
+         $sql = "UPDATE kb_complaint SET status=:status WHERE no=:no";
+        
+       if($stmt = $pdo->prepare($sql)){
+           // Bind variables to the prepared statement as parameters=
+           $stmt->bindParam(":status", $param_status);
+           $stmt->bindParam(":no", $param_no);
+        //    $stmt->bindParam(":title_sub", $param_title);
+        //    $stmt->bindParam(":image_comp", $param_image);
+        //    $stmt->bindParam(":description_comp", $param_description);
+        //    $stmt->bindParam(":location_comp", $param_location);
+        //    $stmt->bindParam(":date_comp", $param_date);
+        //    $stmt->bindParam(":by_comp", $param_by);
+        //    $stmt->bindParam(":status", $param_status);
+        //    $stmt->bindParam(":no", $param_no);
             
             // Set parameters
-            $param_name = $name;
-            $param_title = $title;
-            $param_detail = $detail;
-            $param_location = $location;
-            $param_date = $date;
-            $param_img = $img;
-            $param_status = $status;
+            $param_status = $status_new;
+            $param_no = $no;
+            // $param_title = $title_sub;
+            // $param_image = $image_comp;
+            // $param_description = $description_comp;
+            // $param_location = $location_comp;
+            // $param_date = $date_comp;
+            // $param_by = $by_comp;
+            // $param_status = $status_new;
+            // $param_no = $no;
+
             
             // Attempt to execute the prepared statement
             if($stmt->execute()){
-                // Records created successfully. Redirect to landing page
+                // Records updated successfully. Redirect to landing page
                 header("location: welcome.php");
                 exit();
             } else{
                 echo "Something went wrong. Please try again later.";
             }
         }
-         
-        // Close statement
+       // Close statement
         unset($stmt);
     }
-    
     // Close connection
     unset($pdo);
 } else{
     // Check existence of id parameter before processing further
-    if(isset($_GET["no"]) && !empty(trim($_GET["no"]))){
+   if(isset($_GET["no"]) && !empty(trim($_GET["no"]))){
         // Get URL parameter
-        $id =  trim($_GET["no"]);
+        $no =  trim($_GET["no"]);
         
         // Prepare a select statement
-        $sql = "SELECT * FROM kb_complaint WHERE no = :no";
+        $sql = "SELECT * FROM  kb_complaint WHERE no = :no";
         if($stmt = $pdo->prepare($sql)){
             // Bind variables to the prepared statement as parameters
-            $stmt->bindParam(":no", $param_id);
+            $stmt->bindParam(":no", $param_no);
             
             // Set parameters
-            $param_id = $id;
+            $param_no = $no;
             
             // Attempt to execute the prepared statement
             if($stmt->execute()){
@@ -119,12 +90,12 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                     // Retrieve individual field value
                     $by_comp = $row["by_comp"];
                     $title_sub = $row["title_sub"];
-                    $description_sub = $row["description_sub"];
+                    $description_comp = $row["description_comp"];
                     $date_comp = $row["date_comp"];
                     $location_comp = $row["location_comp"];
                     $image_comp = $row["image_comp"];
-                    $status = $row["status"];
-
+                    $status_new = $row["status"];
+                    
                 } else{
                     // URL doesn't contain valid id. Redirect to error page
                     header("location: error.php");
@@ -154,63 +125,85 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
 
 <head>
     <meta charset="UTF-8">
-    <title>Update Record</title>
+    <title>Update Status</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <style type="text/css">
+        body {
+            font: 14px sans-serif;
+        }
+
         .wrapper {
-            width: 500px;
-            margin: 0 auto;
+            width: 350px;
+            padding: 20px;
+        }
+
+        .w3-theme {
+            color: #fff !important;
+            background-color: #009e74 !important
         }
 
     </style>
 </head>
 
 <body>
-    <div class="wrapper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="page-header">
-                        <h2>Update Komplen</h2>
-                    </div>
-                    <p>Please update status/image and submit to update Komplen.</p>
-                    <form action="<?php echo htmlspecialchars(basename($_SERVER['REQUEST_URI'])); ?>" method="post">
+    <div class="w3-card-4 w3-display-middle">
+        <div class="wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                       <div div class="w3-container w3-theme">
+                            <h3><?php echo $row["title_sub"]; ?></h3>
+                        </div>
+                        <p>Please update status/image and submit to update Komplen.</p>
+                        <form action="<?php echo htmlspecialchars(basename($_SERVER['REQUEST_URI'])); ?>" method="post">
+                            <div class="form-group <?php echo (!empty($by_comp_err)) ? 'has-error' : ''; ?>">
+                                <label>Name</label>
+                                <p class="form-control-static">
+                                    <?php echo $row["by_comp"]; ?>
+                                </p>
+                            </div>
+                            <div class="form-group">
+                                <label>Description</label>
+                                <p class="form-control-static">
+                                    <?php echo $row["description_comp"]; ?>
+                                </p>
+                            </div>
+                            <div class="form-group">
+                                <label>Date</label>
+                                <p class="form-control-static">
+                                    <?php echo $row["date_comp"]; ?>
+                                </p>
+                            </div>
+                            <div class="form-group">
+                                <label>Location</label>
+                                <p class="form-control-static">
+                                    <?php echo $row["location_comp"]; ?>
+                                </p>
+                            </div>
+                            <div class="form-group">
+                                <label>Image</label>
+                                <p class="form-control-static">
+                                    <?php echo $row["image_comp"]; ?>
+                                </p>
+                            </div>
+                            <div class="form-group  <?php echo (!empty($status_new_err)) ? 'has-error' : ''; ?>">
+                                <label>Status</label>
+                                <select name="status_new">
+                                    <option value="Pending" <?php if($status_new=="Pending" ) echo 'selected="selected"' ; ?> >Pending</option>
+                                    <option value="Verified" <?php if($status_new=="Verified" ) echo 'selected="selected"' ; ?> >Verified</option>
+                                    <option value="Resolved" <?php if($status_new=="Resolved" ) echo 'selected="selected"' ; ?> >Resolved</option>
+                                </select>
+                                <span class="help-block">
+                                    <?php echo $status_new_err;?></span>
+                            </div>
 
-                        <div class="form-group">
-                            <label>Name</label>
-                            <input type="text" name="name" class="form-control-static" value="<?php echo $row["by_comp"] ?>">
-                        </div>
-                        <div class="form-group">
-                            <label>Title</label>
-                            <input type="text" name="name" class="form-control-static" value="<?php echo $row["title_sub"] ?>">
-                        </div>
-                        <div class="form-group">
-                            <label>Detail</label>
-                            <input type="text" name="name" class="form-control-static" value="<?php echo $row["description_sub"] ?>">
-                        </div>
-                        <div class="form-group">
-                            <label>Date</label>
-                            <input type="text" name="name" class="form-control-static" value="<?php echo $row["date_comp"] ?>">
-                        </div>
-                        <div class="form-group">
-                            <label>Location</label>
-                            <input type="text" name="name" class="form-control-static" value="<?php echo $row["location_comp"] ?>">
-                        </div>
-                        <div class="form-group">
-                            <label>Image</label>
-                            <input type="text" name="name" class="form-control-static" value="<?php echo $row["image_comp"] ?>">
-                        </div>
-                        <div class="form-group">
-                            <label>Status</label>
-                            <select>
-                                <option name="status" value="pending">Pending</option>
-                                <option name="status" value="resolved">Resolved</option>
-                            </select>
-                        </div>
-                        <input type="hidden" name="id" value="<?php echo $id; ?>" />
-                        <input type="submit" class="btn btn-primary" value="Submit">
-                        <a href="index.php" class="btn btn-default">Cancel</a>
-                    </form>
+                            <input type="hidden" name="no" value="<?php echo $no; ?>" />
+                            <input type="submit" class="w3-button w3-theme" value="Submit">
+                            <a href="index.php" class="btn btn-default">Cancel</a>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

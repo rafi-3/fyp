@@ -131,17 +131,29 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         <?php echo $username_err; ?></span>
                 </div>
                 <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
-                    <input type="password" name="password" class="form-control" placeholder="Password">
+                    <input type="password" name="password" id="pass" class="form-control" placeholder="Password">
                     <span class="help-block">
                         <?php echo $password_err; ?></span>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" onclick="showPassword()"> Show Password
                 </div>
                 <div class="form-group">
                     <input type="submit" class="w3-button w3-theme" value="Login">
                 </div>
             </form>
         </div>
-
     </div>
+    <img src="img/smallheading(T).png" width="20%" class="w3-mobile w3-display-bottomright">
 </body>
-
+<script>
+    function showPassword() {
+    var x = document.getElementById("pass");
+    if (x.type === "password") {
+        x.type = "text";
+    } else {
+        x.type = "password";
+    }
+}
+</script>
 </html>

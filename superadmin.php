@@ -3,12 +3,24 @@
 session_start();
  
 
-require_once 'config.php';
-// Check if the user is logged in, if not then redirect him to login page
-if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
-    header("location: index.php");
-    exit;
-}
+    require_once 'config.php';
+//
+//$sql = "SELECT permission FROM kb_admin WHERE username =:username ";
+//$stmt = $pdo->prepare($sql);
+//
+//// Check if the user is logged in, if not then redirect him to login page
+//if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+//    if(isset($_SESSION['permission'] && $_SESSION['permission'] != "super_admin")){
+//              header("location:superadmin.php");
+//         } else if(isset($_SESSION['permission'] && $_SESSION['permission'] != "admin")){
+//              header("location:welcome.php");
+//
+//         }
+    // Check if the user is logged in, if not then redirect him to login page
+    if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+        header("location: index.php");
+        exit;
+    }
 ?>
 
 !DOCTYPE html>
@@ -76,40 +88,26 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     }
 
 </style>
-<div class="w3-top w3-mobile">
-        <div class="w3-bar w3-theme w3-mobile">
-            <a href="welcome.php" title="Refresh"><img src="img/smallheading(T).png" width="20%" class="w3-mobile"></a>
-            <!--<p>Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>. Welcome to our site.</p>-->
-            <div class="w3-dropdown-hover w3-right">
-                <button class="w3-button"><i class="material-icons">person</i></button>
-                <div class="w3-dropdown-content w3-bar-block w3-border" style="right:0">
-                    <p>Hi, <b>
-                            <?php echo htmlspecialchars($_SESSION["username"]); ?></b>!</p>
-                    <a href="resetpassword.php" class="w3-bar-item w3-button">Reset password</a>
-                    <a href="superadmin.php" class="w3-bar-item w3-button">Super Admin</a>
-                    <a href="logout.php" class="w3-bar-item w3-button w3-theme">Logout</a>
-                    <p>version 0.3(full-db)</p>
-                </div>
-            </div>
-        </div>
-    </div>
+
 <body>
     <!--    top navigation bar and user information-->
     <div class="w3-top w3-mobile">
         <div class="w3-bar w3-theme w3-mobile">
             <a href="superadmin.php" title="Refresh"><img src="img/smallheading(T).png" width="20%" class="w3-mobile"></a>
-            <a href="welcome.php" class="w3-bar-item w3-button w3-theme w3-right w3-mobile">Back</a>
+            <a href="welcome.php" class="w3-bar-item w3-button w3-theme w3-right w3-mobile"><span class="glyphicon glyphicon-circle-arrow-left"></span> Back</a>
+        </div>
+        
+        <!--tab menu-->
+        <div class="tab w3-mobile">
+            <button class="tablinks w3-mobile" onclick="openCity(event, 'kb_user')" id="defaultOpen">Client</button>
+            <button class="tablinks w3-mobile" onclick="openCity(event, 'kb_admin')">Admin</button>
+
         </div>
     </div>
 
-    <br><br>
+    <br><br><br>
 
-    <!--tab menu-->
-    <div class="tab w3-mobile">
-        <button class="tablinks w3-mobile" onclick="openCity(event, 'kb_user')" id="defaultOpen">Client</button>
-        <button class="tablinks w3-mobile" onclick="openCity(event, 'kb_admin')">Admin</button>
-       
-    </div>
+    
     <!--    tab contents -->
 
     <div id="kb_user" class="tabcontent">
@@ -145,12 +143,10 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                                         echo "<td>" . $row['nr_ic'] . "</td>";
                                         echo "<td>" . $row['phone_no'] . "</td>";
                                         echo "<td>";
-//                                            view full details 
-                                            echo "<a href='read.php?no=". $row['no'] ."' title='View Record' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
-//                                            edit komplen
-                                            echo "<a href='update.php?no=". $row['no'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
-//                                           delete row
-                                            echo "<a href='delete_user.php?no=". $row['no'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
+                                    //                                            view full details 
+                                            echo "<a href='read_user.php?no=". $row['no'] ."' title='View User' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
+                                    //                                           delete row
+                                            echo "<a href='delete_user.php?no=". $row['no'] ."' title='Delete User' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
                                         echo "</td>";
                                     echo "</tr>";
                                 }
@@ -197,14 +193,14 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                                 echo "<tbody>";
                                 while($row = $result->fetch()){
                                     echo "<tr>";
-                                        echo "<td>" . $row['no'] . "</td>";
+                                        echo "<td>" . $row['id'] . "</td>";
                                         echo "<td>" . $row['name'] . "</td>";
                                         echo "<td>" . $row['username'] . "</td>";
                                         echo "<td>";
 //                                            edit komplen
                                             echo "<a href='resetpassword_admin.php?id=". $row['id'] ."' title='Reset Password' data-toggle='tooltip'><span class='glyphicon glyphicon-refresh'></span></a>";
 //                                           delete row
-                                            echo "<a href='delete_admin.php?id=". $row['id'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
+                                            echo "<a href='delete_admin.php?id=". $row['id'] ."' title='Delete User' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
                                         echo "</td>";
                                     echo "</tr>";
                                 }

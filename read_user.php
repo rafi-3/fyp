@@ -5,7 +5,7 @@ if(isset($_GET["no"]) && !empty(trim($_GET["no"]))){
     require_once "config.php";
     
     // Prepare a select statement
-    $sql = "SELECT * FROM kb_complaint WHERE no = :no";
+    $sql = "SELECT * FROM kb_user WHERE no = :no";
     
     if($stmt = $pdo->prepare($sql)){
         // Bind variables to the prepared statement as parameters
@@ -21,14 +21,13 @@ if(isset($_GET["no"]) && !empty(trim($_GET["no"]))){
                 contains only one row, we don't need to use while loop */
                 $row = $stmt->fetch(PDO::FETCH_ASSOC);         
                 // Retrieve individual field value
-                $category_main = $row["category_main"];
-                $by_comp = $row["by_comp"];
-                $title_sub = $row["title_sub"];
-                $description_sub = $row["description_comp"];
-                $date_comp = $row["date_comp"];
-                $location_comp = $row["location_comp"];
-                $image_comp = $row["image_comp"];
-                $status = $row["status"];
+                $full_name = $row["full_name"];
+                $user_name = $row["user_name"];
+                $nr_ic = $row["nr_ic"];
+                $phone_no = $row["phone_no"];
+                $email_add = $row["email_add"];
+                $image_pro = $row["image_pro"];
+                $complaint_no = $row["complaint_no"];
                     
             } else{
                 // URL doesn't contain valid id parameter. Redirect to error page
@@ -59,7 +58,7 @@ if(isset($_GET["no"]) && !empty(trim($_GET["no"]))){
 
 <head>
     <meta charset="UTF-8">
-    <title>View Complaint</title>
+    <title>View Record</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <style type="text/css">
@@ -87,45 +86,49 @@ if(isset($_GET["no"]) && !empty(trim($_GET["no"]))){
                 <div class="row">
                     <div class="col-md-12">
                         <div div class="w3-container w3-theme">
-                            <h3><?php echo $row["title_sub"]; ?></h3>
+                            <h3>User details</h3>
+                        </div>
+                         <div class="form-group">
+                            <img class="form-control-static" width="20%" src="data:image/jpeg;base64,'.base64_encode($image_pro).'"/>
+                                
                         </div>
                         <div class="form-group">
                             <label>Name</label>
                             <p class="form-control-static">
-                                <?php echo $row["by_comp"]; ?>
+                                <?php echo $row["full_name"]; ?>
                             </p>
                         </div>
                         <div class="form-group">
-                            <label>Description</label>
+                            <label>Username</label>
                             <p class="form-control-static">
-                                <?php echo $row["description_comp"]; ?>
+                                <?php echo $row["user_name"]; ?>
                             </p>
                         </div>
                         <div class="form-group">
-                            <label>Date</label>
+                            <label>NRIC</label>
                             <p class="form-control-static">
-                                <?php echo $row["date_comp"]; ?>
+                                <?php echo $row["nr_ic"]; ?>
                             </p>
                         </div>
                         <div class="form-group">
-                            <label>Location</label>
+                            <label>Contact detail</label>
                             <p class="form-control-static">
-                                <?php echo $row["location_comp"]; ?>
+                                <?php echo $row["phone_no"]; ?>
                             </p>
                         </div>
                         <div class="form-group">
-                            <label>Image</label>
+                            <label>Email address</label>
                             <p class="form-control-static">
-                                <?php echo $row["image_comp"]; ?>
+                                <?php echo $row["email_add"]; ?>
                             </p>
                         </div>
                         <div class="form-group">
-                            <label>Status</label>
+                            <label>Complaint number</label>
                             <p class="form-control-static">
-                                <?php echo $row["status"]; ?>
+                                <?php echo $row["complaint_no"]; ?>
                             </p>
                         </div>
-                        <p><a href="welcome.php" class="w3-button w3-theme" >Back</a></p>
+                        <p><a href="superadmin.php" class="w3-button w3-theme" >Back</a></p>
                     </div>
                 </div>
             </div>

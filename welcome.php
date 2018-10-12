@@ -9,6 +9,16 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: index.php");
     exit;
 }
+
+//function textColor($status)
+//{
+//    if ($status === 'Resolved')
+//        return '#00FF00';
+//    else if ($Status === 'Verified')
+//        return = '#FF8000';
+//    else if ($status === 'Pending')
+//        return = '#FF0000';
+//}
 ?>
 
 <!DOCTYPE html>
@@ -82,32 +92,30 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     <div class="w3-top w3-mobile">
         <div class="w3-bar w3-theme w3-mobile">
             <a href="welcome.php" title="Refresh"><img src="img/smallheading(T).png" width="20%" class="w3-mobile"></a>
-            <!--<p>Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>. Welcome to our site.</p>-->
             <div class="w3-dropdown-hover w3-right">
-                <button class="w3-button"><i class="material-icons">person</i></button>
+                <button class="w3-button"><i class="material-icons">account_circle</i></button>
                 <div class="w3-dropdown-content w3-bar-block w3-border" style="right:0">
                     <p>Hi, <b>
                             <?php echo htmlspecialchars($_SESSION["username"]); ?></b>!</p>
                     <a href="resetpassword.php" class="w3-bar-item w3-button">Reset password</a>
                     <a href="superadmin.php" class="w3-bar-item w3-button">Super Admin</a>
                     <a href="logout.php" class="w3-bar-item w3-button w3-theme">Logout</a>
-                    <p>version 0.3(full-db)</p>
+                    <p>version 0.4</p>
                 </div>
             </div>
         </div>
+        <!--tab menu-->
+        <div class="tab">
+            <button class="tablinks w3-mobile" onclick="openCity(event, 'WaterWorks')" id="defaultOpen">Water Works & Drain</button>
+            <button class="tablinks w3-mobile" onclick="openCity(event, 'AnimalPest')">Animal & Pest</button>
+            <button class="tablinks w3-mobile" onclick="openCity(event, 'RoadFootpath')">Road & Footpath</button>
+            <button class="tablinks w3-mobile" onclick="openCity(event, 'EnvironmentCleanliness')">Environment & Cleanliness</button>
+            <button class="tablinks w3-mobile" onclick="openCity(event, 'TreesGreenery')">Trees & Greenery</button>
+            <button class="tablinks w3-mobile" onclick="openCity(event, 'OtherComment')">Other & Comment</button>
+        </div>
     </div>
 
-    <br><br>
-
-    <!--tab menu-->
-    <div class="tab">
-        <button class="tablinks w3-mobile" onclick="openCity(event, 'WaterWorks')" id="defaultOpen">Water Works & Drain</button>
-        <button class="tablinks w3-mobile" onclick="openCity(event, 'AnimalPest')">Animal & Pest</button>
-        <button class="tablinks w3-mobile" onclick="openCity(event, 'RoadFootpath')">Road & Footpath</button>
-        <button class="tablinks w3-mobile" onclick="openCity(event, 'EnvironmentCleanliness')">Environment & Cleanliness</button>
-        <button class="tablinks w3-mobile" onclick="openCity(event, 'TreesGreenery')">Trees & Greenery</button>
-        <button class="tablinks w3-mobile" onclick="openCity(event, 'OtherComment')">Other & Comment</button>
-    </div>
+   <br><br><br>
     <!--    tab contents -->
 
     <div id="WaterWorks" class="tabcontent">
