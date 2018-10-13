@@ -42,9 +42,11 @@ if(isset($_POST["no"]) && !empty($_POST["no"])){
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>View Record</title>
+    <title>Delete User</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+    <link rel="shortcut icon" href="img/icon(G).ico">
     <style type="text/css">
+    
         .wrapper{
             width: 500px;
             margin: 0 auto;

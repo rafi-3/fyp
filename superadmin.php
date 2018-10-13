@@ -26,68 +26,13 @@ session_start();
 !DOCTYPE html>
 <html>
 <title>KomplenBiskita</title>
+<link rel="shortcut icon" href="img/icon(G).ico">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
-<style>
-    /*colour*/
-    .w3-theme {
-        color: #fff !important;
-        background-color: #009e74 !important
-    }
-
-    body {
-        font-family: Arial;
-    }
-
-    /* Style the tab */
-    .tab {
-        overflow: hidden;
-        /*border: 1px solid #ccc;*/
-        background-color: #009e74;
-    }
-
-    /* Style the buttons inside the tab */
-    .tab button {
-        background-color: inherit;
-        float: left;
-        border: none;
-        outline: none;
-        cursor: pointer;
-        padding: 14px 16px;
-        transition: 0.3s;
-        font-size: 17px;
-    }
-
-    /* Change background color of buttons on hover */
-    .tab button:hover {
-        background-color: #ddd;
-    }
-
-    /* Create an active/current tablink class */
-    .tab button.active {
-        background-color: #ccc;
-    }
-
-    /* Style the tab content */
-    .tabcontent {
-        display: none;
-        padding: 6px 12px;
-        /* border: 1px solid #ccc;*/
-        border-top: none;
-    }
-
-    .page-header h2 {
-        margin-top: 0;
-    }
-
-    table tr td:last-child a {
-        margin-right: 15px;
-    }
-
-</style>
+<link rel="stylesheet" href="kb.css">
 
 <body>
     <!--    top navigation bar and user information-->

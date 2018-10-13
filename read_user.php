@@ -58,25 +58,11 @@ if(isset($_GET["no"]) && !empty(trim($_GET["no"]))){
 
 <head>
     <meta charset="UTF-8">
-    <title>View Record</title>
+    <title>View User</title>
+    <link rel="shortcut icon" href="img/icon(G).ico">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <style type="text/css">
-        body {
-            font: 14px sans-serif;
-        }
-
-        .wrapper {
-            width: 350px;
-            padding: 20px;
-        }
-
-        .w3-theme {
-            color: #fff !important;
-            background-color: #009e74 !important
-        }
-
-    </style>
+    <link rel="stylesheet" href="kb.css">
 </head>
 
 <body>
