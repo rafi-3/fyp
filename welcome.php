@@ -1,14 +1,56 @@
 <?php
 // Initialize the session
 session_start();
- 
 
 require_once 'config.php';
+
+$username = "";
+
 // Check if the user is logged in, if not then redirect him to login page
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: index.php");
     exit;
+} else {
+    echo "Please log in";
 }
+
+if(isset($_GET['superadmincheck'])) {
+    $username = $_SESSION["username"];
+    $sql = "SELECT permission FROM kb_admin WHERE username =:username ";
+    
+    if($stmt = $pdo->prepare($sql)){
+        // Bind variables to the prepared statement as parameters
+        $stmt->bindParam(":username", $username);
+        
+        // Attempt to execute the prepared statement
+        if($stmt->execute()){
+            // Check if username exists, if yes then verify password
+            if($stmt->rowCount() == 1){ 
+                if($row = $stmt->fetch()){
+                    $permission = $row["permission"];
+                    if($permission === "admin") {
+                        header("location: superadmin.php");
+                    } else {
+                        echo "Only super admin is allowed to access this menu";
+                    }
+                } else {
+                    echo "Fail fetching user info, but user available";
+                }
+            } else {
+                echo "User are available, checking privilage";
+            }
+        } else {
+            echo "Fail to enquire user privilage";
+        }
+    } else {
+        echo "Fail to get user";
+    }
+} else {
+    echo "No such function found";
+}
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -33,7 +75,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     <p>Hi, <b>
                             <?php echo htmlspecialchars($_SESSION["username"]); ?></b>!</p>
                     <a href="resetpassword.php" class="w3-bar-item w3-button">Reset password</a>
-                    <a href="superadmin.php" class="w3-bar-item w3-button">Super Admin</a>
+                    <a href="?superadmincheck">Super Admin</a>
                     <a href="logout.php" class="w3-bar-item w3-button w3-theme">Logout</a>
                     <p>version 0.4</p>
                 </div>

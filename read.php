@@ -102,7 +102,7 @@ if(isset($_GET["no"]) && !empty(trim($_GET["no"]))){
                         <div class="form-group">
                             <label>Image</label>
                             <p class="form-control-static">
-                                <?php echo $row["image_comp"]; ?>
+                                <?php echo ["image_comp"]; ?>
                             </p>
                         </div>
                         <div class="form-group">

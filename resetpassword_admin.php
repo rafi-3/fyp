@@ -21,8 +21,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // Validate new password
     if(empty(trim($_POST["new_password"]))){
         $new_password_err = "Please enter the new password.";     
-    } elseif(strlen(trim($_POST["new_password"])) < 6){
-        $new_password_err = "Password must have atleast 6 characters.";
+    } elseif(strlen(trim($_POST["new_password"])) < 8){
+        $new_password_err = "Password must have atleast 8 characters.";
+    } elseif(filter_var($new_password, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"(^\S*(?=\S{8,})(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])\S*$)")))){
+        $new_password_err = "Please enter at least 8 characters, one uppercase, one lowercase and one special character.";
     } else{
         $new_password = trim($_POST["new_password"]);
     }
@@ -104,7 +106,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 </div>
                 <div class="form-group">
                     <input type="submit" class="w3-button w3-theme" value="Submit">
-                    <a class="btn btn-link" href="welcome.php">Cancel</a>
+                    <a class="btn btn-link" href="superadmin.php">Cancel</a>
                 </div>
             </form>
         </div>
