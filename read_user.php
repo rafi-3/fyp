@@ -75,13 +75,13 @@ if(isset($_GET["no"]) && !empty(trim($_GET["no"]))){
                             <h3>User details</h3>
                         </div>
                          <div class="form-group">
-                            <img class="form-control-static" width="20%" src="data:image/jpeg;base64,'.base64_encode($image_pro).'"/>
-                                
+                            <img class="form-control-static" width="100%" src="https://www.komplenbiskita.site/useruploads/<?php echo $row["image_pro"]; ?>"/>
                         </div>
                         <div class="form-group">
                             <label>Name</label>
                             <p class="form-control-static">
                                 <?php echo $row["full_name"]; ?>
+                                
                             </p>
                         </div>
                         <div class="form-group">

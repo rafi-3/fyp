@@ -5,7 +5,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
     require_once "config.php";
     
     // Prepare a delete statement
-    $sql = "DELETE FROM kb_complaint WHERE id = :id";
+    $sql = "DELETE FROM kb_admin WHERE id = :id";
     
     if($stmt = $pdo->prepare($sql)){
         // Bind variables to the prepared statement as parameters
@@ -62,7 +62,7 @@ if(isset($_POST["id"]) && !empty($_POST["id"])){
                     </div>
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                         <div class="alert alert-danger fade in">
-                            <input type="hidden" name="id" value="<?php echo trim($_GET["no"]); ?>"/>
+                            <input type="hidden" name="id" value="<?php echo trim($_GET["id"]); ?>"/>
                             <p>Are you sure you want to delete this record?</p><br>
                             <p>
                                 <input type="submit" value="Yes" class="btn btn-danger">

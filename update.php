@@ -128,7 +128,7 @@ if(isset($_POST["no"]) && !empty($_POST["no"])){
     <title>Update Status</title>
     <link rel="shortcut icon" href="img/icon(G).ico">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
-     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="kb.css">
 </head>
@@ -139,8 +139,10 @@ if(isset($_POST["no"]) && !empty($_POST["no"])){
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-12">
-                       <div div class="w3-container w3-theme">
-                            <h3><?php echo $row["title_sub"]; ?></h3>
+                        <div div class="w3-container w3-theme">
+                            <h3>
+                                <?php echo $row["title_sub"]; ?>
+                            </h3>
                         </div>
                         <p>Please update status/image and submit to update Komplen.</p>
                         <form action="<?php echo htmlspecialchars(basename($_SERVER['REQUEST_URI'])); ?>" method="post">
@@ -170,9 +172,7 @@ if(isset($_POST["no"]) && !empty($_POST["no"])){
                             </div>
                             <div class="form-group">
                                 <label>Image</label>
-                                <p class="form-control-static">
-                                    <?php echo $row["image_comp"]; ?>
-                                </p>
+                                <img class="form-control-static" width="100%" src="https://www.komplenbiskita.site/useruploads/<?php echo $row["image_comp"]; ?>" alt="" width="290" height="200">
                             </div>
                             <div class="form-group  <?php echo (!empty($status_new_err)) ? 'has-error' : ''; ?>">
                                 <label>Status</label>

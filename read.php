@@ -101,9 +101,7 @@ if(isset($_GET["no"]) && !empty(trim($_GET["no"]))){
                         </div>
                         <div class="form-group">
                             <label>Image</label>
-                            <p class="form-control-static">
-                                <?php echo ["image_comp"]; ?>
-                            </p>
+                                <img class="form-control-static" width="100%" src="https://www.komplenbiskita.site/useruploads/<?php echo $row["image_comp"]; ?>" alt="" width="290" height="200">
                         </div>
                         <div class="form-group">
                             <label>Status</label>

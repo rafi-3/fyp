@@ -1,6 +1,6 @@
 <?php
 // Process delete operation after confirmation
-if(isset($_POST["id"]) && !empty($_POST["id"])){
+if(isset($_POST["no"]) && !empty($_POST["no"])){
     // Include config file
     require_once "config.php";
     
